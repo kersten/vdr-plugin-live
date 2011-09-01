@@ -29,10 +29,12 @@ int update_status(1);
 <# ---------------------------------------------------------------------- #>
 
 <%def stylesheets>
-<link rel="stylesheet" type="text/css" href="styles.css"/>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<# <link rel="stylesheet" type="text/css" href="styles.css"/>
 <link rel="stylesheet" type="text/css" href="<$ LiveSetup().GetThemedLink("css", "theme.css") $>"/>
 <link rel="stylesheet" type="text/css" href="css/siteprefs.css"/>
-<link rel="stylesheet" type="text/css" href="css/DatePicker.css"/>
+<link rel="stylesheet" type="text/css" href="css/DatePicker.css"/> #>
+<link rel="stylesheet" type="text/css" href="css/bootstrap-1.1.1.css"/>
 </%def>
 
 <# ---------------------------------------------------------------------- #>
@@ -42,7 +44,8 @@ int update_status(1);
 	if (LiveSetup().GetShowLogo()
 		|| (LiveSetup().GetUseAjax() && LiveSetup().GetShowInfoBox())) {
 </%cpp>
-<div class="page_header">
+<div class="page_header" style="margin-top: 40px;">
+<#
 <%cpp>
 		if (LiveSetup().GetShowLogo()) {
 </%cpp>
@@ -51,6 +54,7 @@ int update_status(1);
 <%cpp>
 		}
 </%cpp>
+#>
 <%cpp>if (LiveSetup().GetUseAjax() && LiveSetup().GetShowInfoBox()) { </%cpp><& infobox &><%cpp> } </%cpp>
 </div>
 <div style="clear: both"></div>
@@ -221,16 +225,22 @@ int update_status(1);
 <# ---------------------------------------------------------------------- #>
 
 <%def infobox>
+<div class="row show-grid">
+    <div class="span6 columns offset10">
+        <blockquote>
+            <p>
+                <$ tr("Now running: ") $><div id="infobox_caption" class="caption"><$ tr("retrieving status ...") $></div>
+                <$ tr("Time: ") $><div id="infobox_timenow" class="now">--:--</div>
+            </p>
+            <p>
+                <$ tr("Next: ") $><div id="infobox_name" class="name"></div>
+                <$ tr("Duration: ") $><div id="infobox_duration" class="duration">--:--</div>
+            </p>
+        </blockquote>
+    </div>
+</div>
 <div id="infobox">
 	<div class="statuscontent">
-		<div class="st_header">
-			<div id="infobox_caption" class="caption"><$ tr("retrieving status ...") $></div>
-			<div id="infobox_timenow" class="now">--:--</div>
-		</div>
-		<div class="st_content">
-			<div id="infobox_name" class="name"></div>
-			<div id="infobox_duration" class="duration">--:--</div>
-		</div>
 		<div class="st_controls">
 			<div class="st_update">
 				<a href="javascript:InfoBox.toggleUpdate()" <& tooltip.hint text=(tr("Toggle updates on/off.")) &>><img id="statusReloadBtn" src="<$ LiveSetup().GetThemedLink("img", "stop_update.png") $>" alt="" /></a>

@@ -109,11 +109,11 @@ if (type == "now") {
 		//--></script>
 	</head>
 	<body>
-		<& pageelems.logo &>
+        <div class="container">
+		<# <& pageelems.logo &> #>
 		<& menu active=("whats_on") component=("whats_on.whats_on_actions")>
-		<div class="inhalt">
 %			if (mode == "list") {
-			<table class="listing" cellspacing="0" cellpadding="0">
+			<table>
 				<tr class="head">
 					<td colspan="8"><div class="boxheader"><div><div><$ head $></div></div></div></td>
 				</tr>
@@ -170,7 +170,10 @@ if (type == "now") {
 	}
 
 	// display broadcasts
+    int entry = 0;
+    int max = 4;
 	for(std::list<EpgInfoPtr>::iterator i = eventList.begin(); i != eventList.end(); ++i ) {
+        entry++;
 		EpgInfoPtr epgEvent = *i;
 
 		bool truncated = false;
@@ -192,27 +195,43 @@ if (type == "now") {
 			startDate = headDate;
 		}
 		if (mode == "detail") {
+        if (entry % 4 == 1) {
+        max = 0;
 </%cpp>
-			<div class="event">
-				<div class="station">
-					<div><div><div><a href="schedule.html?channel=<$ chNumber $>" <& tooltip.hint text=(tr("View the schedule of this channel")) &>><$ chNumber $><$ tr(" - ") $><$ (epgEvent->Caption()) $></a></div></div></div>
-				</div>
-				<div class="content">
-					<div class="tools">
-						<& pageelems.epg_tool_box detail=(1) epgid=(epgEvent->Id()) title=(epgEvent->Title()) startTime=(epgEvent->GetStartTime()) endTime=(epgEvent->GetEndTime()) &>
-					</div>
-					<div>
-						<div class="info nowrap"><div class="date"><$ (startDate) $></div><div class="time"><$ (timeSpan) $></div></div>
-						<div class="progress"><div><& pageelems.progressbar progress=(epgEvent->Elapsed()) duration=(epgEvent->Duration()) &></div></div>
-						<div class="title withmargin"><$ (epgEvent->Title()) $></div>
-						<div class="short withmargin"><$ (epgEvent->ShortDescr()) $></div>
-						<div class="description withmargin"><$ truncDescription $></div>
+            <div class="row show-grid">
+            <%cpp>
+            }
+            max++;
+            </%cpp>
+                <div class="span4 columns">
+                    <div class="well">
+                        <div class="station">
+                            <h5><a href="schedule.html?channel=<$ chNumber $>" <& tooltip.hint text=(tr("View the schedule of this channel")) &>><$ chNumber $><$ tr(" - ") $><$ (epgEvent->Caption()) $></a></h5>
+                        </div>
+                        <div class="content">
+                            <div class="tools">
+                                <& pageelems.epg_tool_box detail=(1) epgid=(epgEvent->Id()) title=(epgEvent->Title()) startTime=(epgEvent->GetStartTime()) endTime=(epgEvent->GetEndTime()) &>
+                            </div>
+                            <div>
+                                <div class="info nowrap"><div class="date"><$ (startDate) $></div><div class="time"><$ (timeSpan) $></div></div>
+                                <div class="progress"><div><& pageelems.progressbar progress=(epgEvent->Elapsed()) duration=(epgEvent->Duration()) &></div></div>
+                                <div class="title withmargin"><$ (epgEvent->Title()) $></div>
+                                <div class="short withmargin"><$ (epgEvent->ShortDescr()) $></div>
+                                <div class="description withmargin"><$ truncDescription $></div>
 %						if (truncated) {
-							<div class="more withmargin"><a <& tooltip.hint text=(longDescription) &><& tooltip.display domId=(epgEvent->Id()) &>><$ 	tr("more") $> ...</a></div>
+                                    <div class="more withmargin"><a <& tooltip.hint text=(longDescription) &><& tooltip.display domId=(epgEvent->Id()) &>><$ 	tr("more") $> ...</a></div>
 %						}
-					</div>
-				</div>
-			</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <%cpp>
+            if (max == 4) {
+            </%cpp>
+            </div>
+            <%cpp>
+            }
+            </%cpp>
 <%cpp>
 		} else { // mode == "list"
 			std::list<EpgInfoPtr>::iterator last = i;

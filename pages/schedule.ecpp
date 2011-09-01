@@ -63,9 +63,10 @@ if (!logged_in && LiveSetup().UseAuth()) return reply.redirect("login.html");
 		<& pageelems.ajax_js &>
 	</head>
 	<body>
+        <div class="container">
 		<& pageelems.logo &>
 		<& menu active=("schedule") component=("schedule.channel_selection") &>
-		<div class="inhalt">
+		
 <%cpp>
 	if ( Schedule == 0 ) {
 </%cpp>
@@ -74,7 +75,7 @@ if (!logged_in && LiveSetup().UseAuth()) return reply.redirect("login.html");
 	}
 	else {
 </%cpp>
-		<table class="listing" cellspacing="0" cellpadding="0">
+		<table class="zebra-striped">
 <%cpp>
 		string current_day = "";
 		const cEvent* PresentEvent = Schedule->GetPresentEvent();
@@ -118,23 +119,27 @@ if (!logged_in && LiveSetup().UseAuth()) return reply.redirect("login.html");
 <%cpp>
 				}
 </%cpp>
-	   			<tr class="head">
-	   				<td colspan="5"><div class="boxheader"><div><div><$ day $></div></div></div></td>
+                <thead>
+	   			<tr>
+	   				<th colspan="5"><$ day $></th>
 				</tr>
+                </thead>
+                <tbody>
 <%cpp>
 	   			current_day = day;
 			}
 </%cpp>
 				<tr>
-	   				<td class="action leftcol <? lastEventCurrentDay ? "bottomrow" ?>"><& pageelems.event_timer epgid=(epgid) &></td>
-					<td class="action <? lastEventCurrentDay ? "bottomrow" ?>"><%cpp>if (LiveFeatures<features::epgsearch>().Recent() ) { </%cpp><a href="searchresults.html?searchplain=<$ StringUrlEncode(title) $>"><img src="<$ LiveSetup().GetThemedLink("img", "search.png") $>" alt="" <& tooltip.hint text=(tr("Search for repeats.")) &>></img></a><%cpp> } else { </%cpp><img src="img/transparent.png" width="16" height="16"><%cpp> } </%cpp></td>
-					<td class="action <? lastEventCurrentDay ? "bottomrow" ?>"><& pageelems.imdb_info_href title=(title) &></td>
-					<td class="topaligned <? lastEventCurrentDay ? "bottomrow" ?>"><div class="withmargin nowrap"><$ start $> - <$ end $></div></td>
-					<td class="<? (Event == PresentEvent) ? "current" ?> topaligned rightcol <? lastEventCurrentDay ? "bottomrow" ?>"><div class="more withmargin"><a <& tooltip.hint text=(StringEscapeAndBreak(StringWordTruncate(description, 300, truncated)) + "<br />" + tr("Click to view details.")) &><& tooltip.display domId=(epgEvent->Id()) &>><span class="title"><$ title $></span><br /><span class="short"><%cpp>if (short_description.empty()) { </%cpp>&nbsp;<%cpp> } </%cpp><$ short_description $></span></a></div></td>
+	   				<td style="width: 20px"><& pageelems.event_timer epgid=(epgid) &></td>
+					<td style="width: 20px"><%cpp>if (LiveFeatures<features::epgsearch>().Recent() ) { </%cpp><a href="searchresults.html?searchplain=<$ StringUrlEncode(title) $>"><img src="<$ LiveSetup().GetThemedLink("img", "search.png") $>" alt="" <& tooltip.hint text=(tr("Search for repeats.")) &>></img></a><%cpp> } else { </%cpp><img src="img/transparent.png" width="16" height="16"><%cpp> } </%cpp></td>
+					<td style="width: 20px"><& pageelems.imdb_info_href title=(title) &></td>
+					<td style="width: 80px"><$ start $> - <$ end $></div></td>
+					<td><a <& tooltip.hint text=(StringEscapeAndBreak(StringWordTruncate(description, 300, truncated)) + "<br />" + tr("Click to view details.")) &><& tooltip.display domId=(epgEvent->Id()) &>><span class="title"><$ title $></span><%cpp>if (!short_description.empty()) { </%cpp> - <span class="short"><$ short_description $></span><%cpp> } </%cpp></a></td>
 				</tr>
 <%cpp>
 		}
 </%cpp>
+            </tbody>
 			</table>
 <%cpp>
 	}

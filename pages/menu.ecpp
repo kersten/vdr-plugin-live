@@ -33,33 +33,60 @@ if (!component.empty()) {
 }
 
 </%cpp>
-<div class="menu">
-	  <a href="whats_on.html?type=now" <& menu.setactive current=("whats_on") &>><$ tr("What's on?") $></a>
-	| <a href="schedule.html" <& menu.setactive current=("schedule") &>><$ trVDR("Schedule") $></a>
-	| <a href="multischedule.html" <& menu.setactive current=("multischedule") &>><$ tr("MultiSchedule") $></a>
-	| <a href="timers.html" <& menu.setactive current=("timers") &>><$ trVDR("Timers") $></a>
-<%cpp>
-if ( LiveFeatures< features::epgsearch >().Recent() ) {
-</%cpp>
-	| <a href="searchepg.html" <& menu.setactive current=("searchepg") &>><$ tr("Search") $></a>
-	| <a href="searchtimers.html" <& menu.setactive current=("searchtimers") &>><$ tr("Searchtimers") $></a>
-<%cpp>
-}
-</%cpp>
-	| <a href="recordings.html" <& menu.setactive current=("recordings") &>><$ tr("Recordings") $></a>
-	| <a href="remote.html" <& menu.setactive current=("remote") &>><$ tr("Remote Control") $></a>
-	| <a href="setup.html" <& menu.setactive current=("setup") &>><$ trVDR("Setup") $></a>
-<# --- Used by D.H. to test infobox (not part of the released version)
-	| <a href="ibox_status.html" <& menu.setactive current=("status") &>><$ tr("Status Test") $></a>
---- #>
-<%cpp>
-if (LiveSetup().UseAuth()) {
-</%cpp>
-	| <a id="login" href="login.html?action=logout"><$ tr("Logout") $></a>
-<%cpp>
-}
-</%cpp>
-	| <a <& tooltip.display domId=("aboutBox") &>>?</a>
+<div class="topbar">
+    <div class="fill">
+        <div class="container">
+            <h3><a href="#">VDR Live</a></h3>
+            <ul>
+                <li <& menu.setactive current=("whats_on") &>>
+                    <a href="whats_on.html?type=now" <& menu.setactive current=("whats_on") &>><$ tr("What's on?") $></a>
+                </li>
+                <li <& menu.setactive current=("schedule") &>>
+                    <a href="schedule.html" <& menu.setactive current=("schedule") &>><$ trVDR("Schedule") $></a>
+                </li>
+                <li <& menu.setactive current=("multischedule") &>>
+                    <a href="multischedule.html" <& menu.setactive current=("multischedule") &>><$ tr("MultiSchedule") $></a>
+                </li>
+                <li <& menu.setactive current=("timers") &>>
+                    <a href="timers.html" <& menu.setactive current=("timers") &>><$ trVDR("Timers") $></a>
+                </li>
+                <%cpp>
+                if ( LiveFeatures< features::epgsearch >().Recent() ) {
+                </%cpp>
+                    <li <& menu.setactive current=("searchepg") &>>
+                        <a href="searchepg.html" <& menu.setactive current=("searchepg") &>><$ tr("Search") $></a>
+                    </li>
+                    <li <& menu.setactive current=("searchtimers") &>>
+                        <a href="searchtimers.html" <& menu.setactive current=("searchtimers") &>><$ tr("Searchtimers") $></a>
+                    </li>
+                <%cpp>
+                }
+                </%cpp>
+                <li <& menu.setactive current=("recordings") &>>
+                    <a href="recordings.html" <& menu.setactive current=("recordings") &>><$ tr("Recordings") $></a>
+                </li>
+                <li <& menu.setactive current=("remote") &>>
+                    <a href="remote.html" <& menu.setactive current=("remote") &>><$ tr("Remote Control") $></a>
+                </li>
+                <li <& menu.setactive current=("setup") &>>
+                    <a href="setup.html" <& menu.setactive current=("setup") &>><$ trVDR("Setup") $></a>
+                </li>
+                <# --- Used by D.H. to test infobox (not part of the released version)
+                <li <& menu.setactive current=("status") &>>
+                    <a href="ibox_status.html" <& menu.setactive current=("status") &>><$ tr("Status Test") $></a>
+                </li>
+                --- #>
+                <%cpp>
+                if (LiveSetup().UseAuth()) {
+                </%cpp>
+                    <li class=""><a id="login" href="login.html?action=logout"><$ tr("Logout") $></a></li>
+                <%cpp>
+                }
+                </%cpp>
+                <li class=""><a <& tooltip.display domId=("aboutBox") &>>?</a></li>
+            </ul>
+        </div>
+    </div>
 </div>
 <div id="messagebar" class="<? !timerNotifier.ShouldNotify() ? "notpresent" ?>">
   <div> <!-- outer -->
@@ -81,7 +108,7 @@ if (LiveSetup().GetUseAjax()) {
 <%cpp>
 if (!component.empty()) {
 </%cpp>
-<div id="pagemenu">
+<div id="pagemenu" class="actions">
   <div> <!-- outer -->
     <div> <!-- inner -->
 	  <& menu.component current=("whats_on") &>

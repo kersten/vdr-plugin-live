@@ -44,29 +44,42 @@ if (logged_in || !LiveSetup().UseAuth()) return reply.redirect(LiveSetup().GetSt
 		<& pageelems.ajax_js &>
 	</head>
 	<body onload="document.auth.login.focus()">
-	<div style="width: 350px; margin: 0 auto; text-align: center; padding: 20px">
-		<div class="boxheader"><div><div><$ tr("VDR Live Login") $></div></div></div>
-		<div style="border: 1px solid black; padding: 15px">
-			<img src="<$ LiveSetup().GetThemedLink("img", "logo_login.png") $>" alt="VDR Live"></img>
-			<form name="auth">
-				<input type="hidden" name="action" value="login" />
-				<table class="login">
-					<tr>
-						<td><$ tr("User") $>:</td>
-						<td><input type="text" name="login" value="<$ login $>" size="15" maxlength="15" /></td>
-						<td>&nbsp;</td>
-					</tr>
-					<tr>
-						<td><$ tr("Password") $>:</td>
-						<td><input type="password" name="password" value="<$ password $>" size="15" maxlength="15" /></td>
-						<td><button type="submit" class="blue"><$ tr("Login") $></td>
-					</tr>
-				</table>
-			</form>
-			<div style="color: red; margin: 0 auto;">
-				<$ message $>
-			</div>
-		</div>
+	<div class="container">
+        <div class="page-header">
+            <h1>
+                VDR Live
+                <small>LIVE Interactive VDR Environment</small>
+            </h1>
+        </div>
+        <%cpp>      if (action == "login") {
+            if (!Users.ValidLogin(login, password)) { </%cpp>
+                <div class="alert-message error">
+                    <p>
+                        <$ message $>
+                    </p>
+                </div>
+        <%cpp> }} </%cpp>
+        <form name="auth">
+            <fieldset>
+                <legend>Login</legend>
+                <input type="hidden" name="action" value="login" />
+                <div class="clearfix">
+                    <label for="login">User</label>
+                    <div class="input">
+                        <input id="login" class="xlarge" type="text" size="30" value="<$ login $>" name="login" maxlength="15">
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <label for="password">Password</label>
+                    <div class="input">
+                        <input id="password" class="xlarge" type="password" value="<$ password $>" size="30" name="password" maxlength="15">
+                    </div>
+                </div>
+                <div class="actions">
+                    <button type="submit" class="btn primary"><$ tr("Login") $>
+                </div>
+            </fieldset>
+        </form>
 	</div>
 	</body>
 </html>
